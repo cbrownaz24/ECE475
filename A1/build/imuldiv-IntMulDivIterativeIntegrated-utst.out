@@ -8,4 +8,4 @@ VCD info: dumpfile imuldiv-IntMulDivIterative.vcd opened for output.
   + Running Test Case: mixed
      [ passed ] Test ( Is sink finished? ) succeeded 
 
-../imuldiv/imuldiv-IntMulDivIterative.t.v:175: $finish called at 30215 (1s)
+../imuldiv/imuldiv-IntMulDivIterativeIntegrated.t.v:175: $finish called at 30215 (1s)

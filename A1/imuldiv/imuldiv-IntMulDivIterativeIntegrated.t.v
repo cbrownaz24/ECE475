@@ -3,7 +3,7 @@
 //========================================================================
 
 `include "imuldiv-MulDivReqMsg.v"
-`include "imuldiv-IntMulDivIterative.v"
+`include "imuldiv-IntMulDivIterativeIntegrated.v"
 `include "vc-TestSource.v"
 `include "vc-TestSink.v"
 `include "vc-Test.v"
@@ -52,7 +52,7 @@ module imuldiv_IntMulDivIterative_helper
     .b    (src_msg_b)
   );
 
-  imuldiv_IntMulDivIterative imuldiv
+  imuldiv_IntMulDivIterativeIntegrated imuldiv
   (
     .clk                   (clk),
     .reset                 (reset),

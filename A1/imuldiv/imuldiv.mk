@@ -11,6 +11,8 @@ imuldiv_srcs = \
   imuldiv-IntMulIterative.v \
   imuldiv-IntDivIterative.v \
   imuldiv-IntMulDivIterative.v \
+  imuldiv-IntMulDivIterative3Input.v \
+  imuldiv-IntMulDivIterativeIntegrated.v \
 
 imuldiv_test_srcs = \
   imuldiv-DivReqMsg.t.v \
@@ -19,8 +21,13 @@ imuldiv_test_srcs = \
   imuldiv-IntMulIterative.t.v \
   imuldiv-IntDivIterative.t.v \
   imuldiv-IntMulDivIterative.t.v \
+  imuldiv-IntMulDivIterativeIntegrated.t.v \
+  imuldiv-IntMulDivIterative3Input.t.v \
+
 
 imuldiv_prog_srcs = \
   imuldiv-singcyc-sim.v \
   imuldiv-iterative-sim.v \
+  imuldiv-iterative-3-input-sim.v \
+  imuldiv-iterative-integrated-sim.v \
 

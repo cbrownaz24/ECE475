@@ -129,6 +129,8 @@ module tester;
     t0.src.m[ 1] = 65'h0_0a01b044_ffffb14a; t0.sink.m[ 1] = 64'h0a01b044_00000000;
     t0.src.m[ 2] = 65'h0_ffffffff_00000002; t0.sink.m[ 2] = 64'h00000001_7fffffff;
     t0.src.m[ 3] = 65'h0_00000000_00000001; t0.sink.m[ 3] = 64'h00000000_00000000;
+    t0.src.m[ 4] = 65'h0_00000001_00000001; t0.sink.m[ 4] = 64'h00000000_00000001;
+    t0.src.m[ 5] = 65'h0_ffffffff_ffffffff; t0.sink.m[ 5] = 64'h00000000_00000001;
 
     #5;   t0_reset = 1'b1;
     #20;  t0_reset = 1'b0;

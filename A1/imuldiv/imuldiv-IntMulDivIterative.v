@@ -7,14 +7,14 @@
 
 module imuldiv_IntMulDivIterative
 (
-  input         clk, reset,
-  input   [2:0] muldivreq_msg_fn,
-  input  [31:0] muldivreq_msg_a, muldivreq_msg_b,
-  input         muldivreq_val,
-  output        muldivreq_rdy,
+  input clk, reset,
+  input [2:0] muldivreq_msg_fn,
+  input [31:0] muldivreq_msg_a, muldivreq_msg_b,
+  input muldivreq_val,
+  output muldivreq_rdy,
   output [63:0] muldivresp_msg_result,
-  output        muldivresp_val,
-  input         muldivresp_rdy
+  output muldivresp_val,
+  input muldivresp_rdy
 );
 
   wire mulreq_rdy, divreq_rdy, mulresp_val, divresp_val;
