@@ -579,9 +579,6 @@ module riscv_CoreCtrl
   //----------------------------------------------------------------------
   // Steering Logic: Dual-fetch, single-issue (Part 1)
   //----------------------------------------------------------------------
-  // Toggle alternates between instruction 0 (toggle=0) and instruction 1
-  // (toggle=1). Only one instruction issues per cycle through pipeline A.
-
   reg steering_toggle;
 
   always @(posedge clk) begin
@@ -601,7 +598,6 @@ module riscv_CoreCtrl
                    && !brj_taken_Dhl
                    && !squash_Dhl;
 
-  // Steering mux: select csA and register addresses for pipeline A
   reg [cs_sz-1:0] csA;
   reg [4:0] instA_rs1_steer;
   reg [4:0] instA_rs2_steer;
@@ -621,9 +617,9 @@ module riscv_CoreCtrl
 
   // Output steered instructions to datapath
   assign instA_Dhl = (steering_mux_sel_Dhl == 1'b0) ? ir0_Dhl : ir1_Dhl;
-  assign instB_Dhl = 32'h00000013; // NOP (addi x0,x0,0) — pipeline B unused in Part 1
+  assign instB_Dhl = 32'h00000013; // nop since pipeline B unused
 
-  // Jump and Branch Controls (use steered csA)
+  // Jump and Branch Controls
 
   wire       brj_taken_Dhl = ( inst_val_Dhl && csA[`RISCV_INST_MSG_J_EN] );
   wire [2:0] br_sel_Dhl    = csA[`RISCV_INST_MSG_BR_SEL];
@@ -633,7 +629,7 @@ module riscv_CoreCtrl
   wire [1:0] pc_mux_sel_Dhl = csA[`RISCV_INST_MSG_PC_SEL];
 
   //----------------------------------------------------------------------
-  // Operand Bypassing Logic (pipeline A only for Part 1)
+  // Operand Bypassing Logic
   //----------------------------------------------------------------------
 
   wire [4:0] rsA1_addr_Dhl = instA_rs1_steer;
@@ -673,16 +669,15 @@ module riscv_CoreCtrl
     : (rs2_AW_byp)  ? bm_AW_byp
     :                  bm_r1;
 
-  // Pipeline B unused in Part 1 — no bypass needed
   assign opB0_byp_mux_sel_Dhl = am_r0;
   assign opB1_byp_mux_sel_Dhl = bm_r1;
 
-  // Operand Mux Select (from steered csA)
+  // Operand Mux Select
 
   assign opA0_mux_sel_Dhl = csA[`RISCV_INST_MSG_OP0_SEL];
   assign opA1_mux_sel_Dhl = csA[`RISCV_INST_MSG_OP1_SEL];
-  assign opB0_mux_sel_Dhl = 2'd0;  // unused
-  assign opB1_mux_sel_Dhl = 3'd0;  // unused
+  assign opB0_mux_sel_Dhl = 2'd0; 
+  assign opB1_mux_sel_Dhl = 3'd0; 
 
   // ALU Function
 
@@ -831,7 +826,7 @@ module riscv_CoreCtrl
 
   // Connect ALU function outputs
   assign aluA_fn_X0hl = alu0_fn_X0hl;
-  assign aluB_fn_X0hl = alu_add; // Pipeline B unused — default to add
+  assign aluB_fn_X0hl = alu_add; 
 
   //----------------------------------------------------------------------
   // Execute Stage
@@ -965,10 +960,6 @@ module riscv_CoreCtrl
 
   wire stall_dmem_X1hl
     = ( !reset && dmemreq_val_X1hl && inst_val_X1hl && !dmemresp_val && !dmemresp_queue_val_X1hl );
-
-  // Stall in X1 if imem response not returned — gated by !stall_0_Dhl
-  // to prevent spurious stalls during toggle hold cycles
-
   wire stall_imem_X1hl
     = ( !reset && !stall_0_Dhl && imemreq_val_Fhl && inst_val_Fhl && !imemresp0_val && !imemresp0_queue_val_Fhl )
    || ( !reset && !stall_0_Dhl && imemreq_val_Fhl && inst_val_Fhl && !imemresp1_val && !imemresp1_queue_val_Fhl );
@@ -1272,7 +1263,6 @@ module riscv_CoreCtrl
   reg overload = 1'b0;
 
   always @ ( posedge clk ) begin
-    // Only check when D stage is valid (not a bubble/squash)
     if ( inst_val_Dhl && !reset ) begin
       if ( !cs0[`RISCV_INST_MSG_INST_VAL] || !cs1[`RISCV_INST_MSG_INST_VAL] ) begin
         $display(" RTL-ERROR : %m : Illegal instruction!");
